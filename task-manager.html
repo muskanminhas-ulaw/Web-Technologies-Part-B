@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Manager - Muskan Minhas</title>
+    <link rel="stylesheet" href="css/task-manager.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="container">
+            <a href="index.html" class="logo">Muskan Minhas</a>
+            <button class="menu-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+            <ul class="nav-links">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#consolidated-tasks">Consolidated Tasks</a></li>
+                <li><a href="task-manager.html" class="active">Task Manager</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Task Manager Section -->
+    <section class="task-manager">
+        <div class="container">
+            <div class="header-section">
+                <h1>Task Manager</h1>
+                <p class="subtitle">Organize your tasks efficiently</p>
+            </div>
+
+            <!-- Add Task Form -->
+            <div class="task-form-container">
+                <h2>Add New Task</h2>
+                <form id="taskForm" class="task-form">
+                    <div class="form-group">
+                        <label for="taskTitle">
+                            <i class="fas fa-heading"></i>
+                            Task Title
+                        </label>
+                        <input type="text" id="taskTitle" placeholder="Enter task title" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="taskDescription">
+                            <i class="fas fa-align-left"></i>
+                            Description
+                        </label>
+                        <textarea id="taskDescription" rows="4" placeholder="Enter task description" required></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskDueDate">
+                                <i class="fas fa-calendar"></i>
+                                Due Date
+                            </label>
+                            <input type="date" id="taskDueDate" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="taskCategory">
+                                <i class="fas fa-folder"></i>
+                                Category
+                            </label>
+                            <select id="taskCategory" required>
+                                <option value="">Select category</option>
+                                <option value="Work">Work</option>
+                                <option value="Personal">Personal</option>
+                                <option value="Study">Study</option>
+                                <option value="Health">Health</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Add Task
+                    </button>
+                </form>
+            </div>
+
+            <!-- Filters and Search -->
+            <div class="controls-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search tasks...">
+                </div>
+
+                <div class="filters">
+                    <select id="filterCategory">
+                        <option value="all">All Categories</option>
+                        <option value="Work">Work</option>
+                        <option value="Personal">Personal</option>
+                        <option value="Study">Study</option>
+                        <option value="Health">Health</option>
+                        <option value="Other">Other</option>
+                    </select>
+
+                    <select id="filterStatus">
+                        <option value="all">All Status</option>
+                        <option value="in-progress">In Progress</option>
+                        <option value="completed">Completed</option>
+                    </select>
+
+                    <select id="sortBy">
+                        <option value="date-asc">Due Date (Earliest)</option>
+                        <option value="date-desc">Due Date (Latest)</option>
+                        <option value="title">Title (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Task Statistics -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalTasks">0</h3>
+                        <p>Total Tasks</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon in-progress">
+                        <i class="fas fa-spinner"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="inProgressTasks">0</h3>
+                        <p>In Progress</p>
+                    </div>
+                </div>
+
+                <div class="stat-card">
+                    <div class="stat-icon completed">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="completedTasks">0</h3>
+                        <p>Completed</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasks List -->
+            <div class="tasks-section">
+                <h2>Your Tasks</h2>
+                <div id="tasksList" class="tasks-list">
+                    <!-- Tasks will be dynamically added here -->
+                    <div class="empty-state">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>No tasks yet. Add your first task above!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Edit Task Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Edit Task</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="editTaskForm" class="task-form">
+                <input type="hidden" id="editTaskId">
+                
+                <div class="form-group">
+                    <label for="editTaskTitle">
+                        <i class="fas fa-heading"></i>
+                        Task Title
+                    </label>
+                    <input type="text" id="editTaskTitle" placeholder="Enter task title" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editTaskDescription">
+                        <i class="fas fa-align-left"></i>
+                        Description
+                    </label>
+                    <textarea id="editTaskDescription" rows="4" placeholder="Enter task description" required></textarea>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTaskDueDate">
+                            <i class="fas fa-calendar"></i>
+                            Due Date
+                        </label>
+                        <input type="date" id="editTaskDueDate" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="editTaskCategory">
+                            <i class="fas fa-folder"></i>
+                            Category
+                        </label>
+                        <select id="editTaskCategory" required>
+                            <option value="Work">Work</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Study">Study</option>
+                            <option value="Health">Health</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i>
+                    Save Changes
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Muskan Minhas. All rights reserved.</p>
+            <div class="footer-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#consolidated-tasks">Weekly Tasks</a>
+                <a href="task-manager.html">Task Manager</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/task-manager.js"></script>
+</body>
+</html>
